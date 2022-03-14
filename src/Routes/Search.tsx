@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { GrNext } from 'react-icons/gr';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { searchState } from '../atoms';
+import { Helmet } from 'react-helmet';
 
 const Wrapper = styled.div`
   background: black;
@@ -192,6 +193,9 @@ function Search() {
 
   return (
     <Wrapper>
+      <Helmet>
+        <title>Search</title>
+      </Helmet>
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (

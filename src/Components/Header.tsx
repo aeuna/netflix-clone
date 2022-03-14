@@ -3,7 +3,7 @@ import { motion, useAnimation, useViewportScroll } from 'framer-motion';
 import { Link, useRouteMatch, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { searchState } from '../atoms';
 
 const Nav = styled(motion.nav)`

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { makeImagePath } from '../utils';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { GrNext } from 'react-icons/gr';
+import { Helmet } from 'react-helmet';
 
 const Wrapper = styled.div`
   background: black;
@@ -309,6 +310,9 @@ function Home() {
 
   return (
     <Wrapper>
+      <Helmet>
+        <title>Home</title>
+      </Helmet>
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (
