@@ -15,6 +15,9 @@ export interface ITvShow {
   poster_path: string;
   name: string;
   overview: string;
+  vote_average: number;
+  original_name: string;
+  popularity: number;
 }
 
 export interface IGetMoviesResult {

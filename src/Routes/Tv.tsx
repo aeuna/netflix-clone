@@ -160,6 +160,44 @@ const NextIcon = styled(GrNext)`
   background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 255, 255, 0.3));
 `;
 
+const BigPoster = styled.div`
+  top: 250px;
+  color: ${(props) => props.theme.white.lighter};
+  z-index: 99;
+  position: absolute;
+  right: 20px;
+  overflow: hidden;
+  margin: 0 auto;
+  width: 160px;
+  height: 240px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const BigOriginalTitle = styled.div`
+  padding: 5px 20px;
+  position: relative;
+  top: -80px;
+  color: ${(props) => props.theme.white.lighter};
+`;
+
+const BigVote = styled.div`
+  padding: 5px 20px;
+  position: relative;
+  top: -80px;
+  color: ${(props) => props.theme.white.lighter};
+`;
+
+const BigPopularity = styled.div`
+  padding: 5px 20px;
+  position: relative;
+  top: -80px;
+  color: ${(props) => props.theme.white.lighter};
+`;
+
 const rowVariants = {
   hidden: {
     x: window.outerWidth + 5,
@@ -402,7 +440,13 @@ function Tv() {
                           }}
                         />
                         <BigTitle>{clickedTv.name}</BigTitle>
+                        <BigOriginalTitle>{clickedTv.original_name}</BigOriginalTitle>
+                        <BigVote>⭐ {clickedTv.vote_average}</BigVote>
+                        <BigPopularity>&#128156; {clickedTv.popularity}</BigPopularity>
                         <BigOverview>{clickedTv.overview}</BigOverview>
+                        <BigPoster>
+                          <img src={makeImagePath(clickedTv.poster_path, 'w200')} alt="tv" />
+                        </BigPoster>
                       </>
                     )}
                   </BigMovie>
