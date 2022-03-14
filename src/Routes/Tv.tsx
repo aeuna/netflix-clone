@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useViewportScroll } from 'framer-motion';
 import { useState } from 'react';
 import { makeImagePath } from '../utils';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { GrFormNext } from 'react-icons/gr';
+import { GrNext } from 'react-icons/gr';
 
 const Wrapper = styled.div`
   background: black;
@@ -127,7 +127,6 @@ const Rows = styled.div`
   height: 115vh;
   display: flex;
   flex-direction: column;
-  /* background-color: red; */
 `;
 
 const Content = styled.div`
@@ -148,13 +147,17 @@ const ContentTitle = styled.div`
   margin-right: 10px;
 `;
 
-const NextIcon = styled(GrFormNext)`
+const NextIcon = styled(GrNext)`
   font-size: 30px;
-  color: white;
-  background-color: white;
+  font-weight: bolder;
   &:hover {
     cursor: pointer;
   }
+  z-index: 99;
+  position: absolute;
+  right: 0px;
+  margin: 85px 0px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 255, 255, 0.3));
 `;
 
 const rowVariants = {
@@ -280,7 +283,6 @@ function Tv() {
             <Content>
               <ContentHeader>
                 <ContentTitle>Popular Shows</ContentTitle>
-                {popularData && popularData.results.length > 6 && <NextIcon color="#fff" onClick={() => increaseIndex('popular')} />}
               </ContentHeader>
               <Slider>
                 <AnimatePresence initial={false} onExitComplete={() => toggleLeaving('popular')}>
@@ -304,11 +306,11 @@ function Tv() {
                   </Row>
                 </AnimatePresence>
               </Slider>
+              {popularData && popularData.results.length > 6 && <NextIcon onClick={() => increaseIndex('popular')} />}
             </Content>
             <Content>
               <ContentHeader>
                 <ContentTitle>Top Rated</ContentTitle>
-                {ratedData && ratedData.results.length > 6 && <NextIcon color="#fff" onClick={() => increaseIndex('rated')} />}
               </ContentHeader>
               <Slider>
                 <AnimatePresence initial={false} onExitComplete={() => toggleLeaving('rated')}>
@@ -332,11 +334,11 @@ function Tv() {
                   </Row>
                 </AnimatePresence>
               </Slider>
+              {ratedData && ratedData.results.length > 6 && <NextIcon onClick={() => increaseIndex('rated')} />}
             </Content>
             <Content>
               <ContentHeader>
                 <ContentTitle>Airing Today Shows</ContentTitle>
-                {airingTodayData && airingTodayData.results.length > 6 && <NextIcon color="#fff" onClick={() => increaseIndex('airingToday')} />}
               </ContentHeader>
               <Slider>
                 <AnimatePresence initial={false} onExitComplete={() => toggleLeaving('airingToday')}>
@@ -360,6 +362,7 @@ function Tv() {
                   </Row>
                 </AnimatePresence>
               </Slider>
+              {airingTodayData && airingTodayData.results.length > 6 && <NextIcon onClick={() => increaseIndex('airingToday')} />}
             </Content>
             <Content>
               <ContentHeader>

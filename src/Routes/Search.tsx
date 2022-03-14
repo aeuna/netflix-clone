@@ -1,15 +1,14 @@
 import { useQuery } from 'react-query';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { getSearchMovies, getSearchTvShows, IGetMoviesResult, IGetSearchTvResult } from '../api';
 import { makeImagePath } from '../utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { GrFormNext } from 'react-icons/gr';
+import { GrNext } from 'react-icons/gr';
 
 const Wrapper = styled.div`
   background: black;
-  /* padding-bottom: 200px; */
 `;
 
 const Loader = styled.div`
@@ -30,7 +29,6 @@ const Rows = styled.div`
   height: 90vh;
   display: flex;
   flex-direction: column;
-  /* background-color: red; */
 `;
 
 const MovieRow = styled(motion.div)`
@@ -60,7 +58,6 @@ const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-image: url(${(props) => props.bgPhoto});
   background-position: center;
   background-size: cover;
-  cursor: pointer;
   &:first-child {
     transform-origin: center left;
   }
@@ -93,13 +90,17 @@ const ContentHeader = styled.div`
   align-items: center;
 `;
 
-const NextIcon = styled(GrFormNext)`
+const NextIcon = styled(GrNext)`
   font-size: 30px;
-  color: white;
-  background-color: white;
+  font-weight: bolder;
   &:hover {
     cursor: pointer;
   }
+  z-index: 99;
+  position: absolute;
+  right: 0px;
+  margin: 105px 0px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 255, 255, 0.3));
 `;
 
 const rowVariants = {
@@ -143,7 +144,6 @@ const infoVariants = {
 const offset = 9;
 
 function Search() {
-  const history = useHistory();
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get('keyword');
 
@@ -183,10 +183,6 @@ function Search() {
     }
   };
 
-  const onBoxClicked = (movieId: number) => {
-    history.push(`/movies/${movieId}`);
-  };
-
   return (
     <Wrapper>
       {loading ? (
@@ -196,64 +192,56 @@ function Search() {
           <Content>
             <ContentHeader>
               <Title>Movie Results</Title>
-              {movieData && movieData.results.length > 9 && <NextIcon color="#fff" onClick={() => increaseIndex('movie')} />}
             </ContentHeader>
             <Slider>
               <AnimatePresence initial={false} onExitComplete={() => toggleLeaving('movie')}>
                 <MovieRow variants={rowVariants} initial="hidden" animate="visible" exit="exit" transition={{ type: 'tween', duration: 1 }} key={movieIndex}>
-                  {movieData?.results
-                    .slice(1)
-                    .slice(offset * movieIndex, offset * movieIndex + offset)
-                    .map((movie) => (
-                      <Box
-                        layoutId={movie.id + ''}
-                        variants={boxVariants}
-                        initial="normal"
-                        whileHover="hover"
-                        transition={{ type: 'tween' }}
-                        key={movie.id}
-                        bgPhoto={makeImagePath(movie.poster_path, 'w500')}
-                        onClick={() => onBoxClicked(movie.id)}
-                      >
-                        <Info variants={infoVariants}>
-                          <h4>{movie.title}</h4>
-                        </Info>
-                      </Box>
-                    ))}
+                  {movieData?.results.slice(offset * movieIndex, offset * movieIndex + offset).map((movie) => (
+                    <Box
+                      layoutId={movie.id + 'movie'}
+                      variants={boxVariants}
+                      initial="normal"
+                      whileHover="hover"
+                      transition={{ type: 'tween' }}
+                      key={movie.id}
+                      bgPhoto={makeImagePath(movie.poster_path, 'w500')}
+                    >
+                      <Info variants={infoVariants}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
+                  ))}
                 </MovieRow>
               </AnimatePresence>
             </Slider>
+            {movieData && movieData.results.length > 9 && <NextIcon onClick={() => increaseIndex('movie')} />}
           </Content>
           <Content>
             <ContentHeader>
               <Title>TV Results</Title>
-              {movieData && movieData.results.length > 9 && <NextIcon onClick={() => increaseIndex('tv')} />}
             </ContentHeader>
             <Slider>
               <AnimatePresence initial={false} onExitComplete={() => toggleLeaving('tv')}>
                 <TvRow variants={rowVariants} initial="hidden" animate="visible" exit="exit" transition={{ type: 'tween', duration: 1 }} key={tvIndex}>
-                  {tvData?.results
-                    .slice(1)
-                    .slice(offset * tvIndex, offset * tvIndex + offset)
-                    .map((movie) => (
-                      <Box
-                        layoutId={movie.id + ''}
-                        variants={boxVariants}
-                        initial="normal"
-                        whileHover="hover"
-                        transition={{ type: 'tween' }}
-                        key={movie.id}
-                        bgPhoto={makeImagePath(movie.poster_path, 'w500')}
-                        onClick={() => onBoxClicked(movie.id)}
-                      >
-                        <Info variants={infoVariants}>
-                          <h4>{movie.name}</h4>
-                        </Info>
-                      </Box>
-                    ))}
+                  {tvData?.results.slice(offset * tvIndex, offset * tvIndex + offset).map((movie) => (
+                    <Box
+                      layoutId={movie.id + 'tv'}
+                      variants={boxVariants}
+                      initial="normal"
+                      whileHover="hover"
+                      transition={{ type: 'tween' }}
+                      key={movie.id}
+                      bgPhoto={makeImagePath(movie.poster_path, 'w500')}
+                    >
+                      <Info variants={infoVariants}>
+                        <h4>{movie.name}</h4>
+                      </Info>
+                    </Box>
+                  ))}
                 </TvRow>
               </AnimatePresence>
             </Slider>
+            {movieData && movieData.results.length > 9 && <NextIcon onClick={() => increaseIndex('tv')} />}
           </Content>
         </Rows>
       )}
