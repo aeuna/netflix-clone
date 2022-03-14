@@ -9,8 +9,16 @@ interface IMovie {
   overview: string;
 }
 
+interface ITvShow {
+  id: number;
+  backdrop_path: string;
+  poster_path: string;
+  name: string;
+  overview: string;
+}
+
 export interface IGetMoviesResult {
-  dates: {
+  dates?: {
     maximum: string;
     minimum: string;
   };
@@ -20,6 +28,21 @@ export interface IGetMoviesResult {
   total_results: number;
 }
 
+export interface IGetSearchTvResult {
+  page: number;
+  results: ITvShow[];
+  total_pages: number;
+  total_results: number;
+}
+
 export function getMovies() {
-  return fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}`).then((response) => response.json());
+  return fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&language=ko&region=kr`).then((response) => response.json());
+}
+
+export function getSearchMovies(query: string) {
+  return fetch(`${BASE_PATH}/search/movie?api_key=${API_KEY}&language=ko&query=${query}&region=kr`).then((response) => response.json());
+}
+
+export function getSearchTvShows(query: string) {
+  return fetch(`${BASE_PATH}/search/tv?api_key=${API_KEY}&language=ko&query=${query}`).then((response) => response.json());
 }
