@@ -213,6 +213,7 @@ function Home() {
   const [nowPlayingLeaving, setNowPlayingLeaving] = useState(false);
   const [ratedLeaving, setRatedLeaving] = useState(false);
   const [upComingLeaving, setUpComingLeaving] = useState(false);
+  const [clickedData, setClickedData] = useState<IGetMoviesResult>();
 
   const loading = nowPlayingLoading || latestLoading || ratedLoading || upComingLoading;
 
@@ -248,13 +249,22 @@ function Home() {
     }
   };
 
-  const onBoxClicked = (movieId: number) => {
+  const onBoxClicked = (movieId: number, type: string) => {
     history.push(`/movies/${movieId}`);
+    let info: any = {};
+    type === 'nowPlaying' && nowPlayingData
+      ? (info = { ...nowPlayingData })
+      : type === 'rated' && ratedData
+      ? (info = { ...ratedData })
+      : type === 'upComing' && upComingData
+      ? (info = { ...upComingData })
+      : (info = { results: [latestData] });
+    setClickedData(info);
   };
 
   const onOverlayClick = () => history.push('/');
 
-  // const clickedMovie = bigMovieMatch?.params.movieId && data?.results.find((movie) => movie.id === +bigMovieMatch.params.movieId);
+  const clickedMovie = bigMovieMatch?.params.movieId && clickedData?.results.find((movie) => movie.id === +bigMovieMatch.params.movieId);
 
   return (
     <Wrapper>
@@ -275,25 +285,22 @@ function Home() {
               <Slider>
                 <AnimatePresence initial={false} onExitComplete={() => toggleLeaving('nowPlaying')}>
                   <Row variants={rowVariants} initial="hidden" animate="visible" exit="exit" transition={{ type: 'tween', duration: 1 }} key={nowPlayingIndex}>
-                    {nowPlayingData?.results
-                      .slice(1)
-                      .slice(offset * nowPlayingIndex, offset * nowPlayingIndex + offset)
-                      .map((movie) => (
-                        <Box
-                          layoutId={movie.id + ''}
-                          variants={boxVariants}
-                          initial="normal"
-                          whileHover="hover"
-                          transition={{ type: 'tween' }}
-                          key={movie.id}
-                          bgPhoto={makeImagePath(movie.backdrop_path, 'w500')}
-                          onClick={() => onBoxClicked(movie.id)}
-                        >
-                          <Info variants={infoVariants}>
-                            <h4>{movie.title}</h4>
-                          </Info>
-                        </Box>
-                      ))}
+                    {nowPlayingData?.results.slice(offset * nowPlayingIndex, offset * nowPlayingIndex + offset).map((movie) => (
+                      <Box
+                        layoutId={movie.id + 'nowPlaying'}
+                        variants={boxVariants}
+                        initial="normal"
+                        whileHover="hover"
+                        transition={{ type: 'tween' }}
+                        key={movie.id}
+                        bgPhoto={makeImagePath(movie.backdrop_path, 'w500')}
+                        onClick={() => onBoxClicked(movie.id, 'nowPlaying')}
+                      >
+                        <Info variants={infoVariants}>
+                          <h4>{movie.title}</h4>
+                        </Info>
+                      </Box>
+                    ))}
                   </Row>
                 </AnimatePresence>
               </Slider>
@@ -306,25 +313,22 @@ function Home() {
               <Slider>
                 <AnimatePresence initial={false} onExitComplete={() => toggleLeaving('rated')}>
                   <Row variants={rowVariants} initial="hidden" animate="visible" exit="exit" transition={{ type: 'tween', duration: 1 }} key={ratedIndex}>
-                    {ratedData?.results
-                      .slice(1)
-                      .slice(offset * ratedIndex, offset * ratedIndex + offset)
-                      .map((movie) => (
-                        <Box
-                          layoutId={movie.id + ''}
-                          variants={boxVariants}
-                          initial="normal"
-                          whileHover="hover"
-                          transition={{ type: 'tween' }}
-                          key={movie.id}
-                          bgPhoto={makeImagePath(movie.backdrop_path, 'w500')}
-                          onClick={() => onBoxClicked(movie.id)}
-                        >
-                          <Info variants={infoVariants}>
-                            <h4>{movie.title}</h4>
-                          </Info>
-                        </Box>
-                      ))}
+                    {ratedData?.results.slice(offset * ratedIndex, offset * ratedIndex + offset).map((movie) => (
+                      <Box
+                        layoutId={movie.id + 'rated'}
+                        variants={boxVariants}
+                        initial="normal"
+                        whileHover="hover"
+                        transition={{ type: 'tween' }}
+                        key={movie.id}
+                        bgPhoto={makeImagePath(movie.backdrop_path, 'w500')}
+                        onClick={() => onBoxClicked(movie.id, 'rated')}
+                      >
+                        <Info variants={infoVariants}>
+                          <h4>{movie.title}</h4>
+                        </Info>
+                      </Box>
+                    ))}
                   </Row>
                 </AnimatePresence>
               </Slider>
@@ -337,25 +341,22 @@ function Home() {
               <Slider>
                 <AnimatePresence initial={false} onExitComplete={() => toggleLeaving('upComing')}>
                   <Row variants={rowVariants} initial="hidden" animate="visible" exit="exit" transition={{ type: 'tween', duration: 1 }} key={upComingIndex}>
-                    {upComingData?.results
-                      .slice(1)
-                      .slice(offset * upComingIndex, offset * upComingIndex + offset)
-                      .map((movie) => (
-                        <Box
-                          layoutId={movie.id + ''}
-                          variants={boxVariants}
-                          initial="normal"
-                          whileHover="hover"
-                          transition={{ type: 'tween' }}
-                          key={movie.id}
-                          bgPhoto={makeImagePath(movie.backdrop_path, 'w500')}
-                          onClick={() => onBoxClicked(movie.id)}
-                        >
-                          <Info variants={infoVariants}>
-                            <h4>{movie.title}</h4>
-                          </Info>
-                        </Box>
-                      ))}
+                    {upComingData?.results.slice(offset * upComingIndex, offset * upComingIndex + offset).map((movie) => (
+                      <Box
+                        layoutId={movie.id + 'upComing'}
+                        variants={boxVariants}
+                        initial="normal"
+                        whileHover="hover"
+                        transition={{ type: 'tween' }}
+                        key={movie.id}
+                        bgPhoto={makeImagePath(movie.backdrop_path, 'w500')}
+                        onClick={() => onBoxClicked(movie.id, 'upComing')}
+                      >
+                        <Info variants={infoVariants}>
+                          <h4>{movie.title}</h4>
+                        </Info>
+                      </Box>
+                    ))}
                   </Row>
                 </AnimatePresence>
               </Slider>
@@ -368,14 +369,14 @@ function Home() {
                 <Row>
                   {latestData && (
                     <Box
-                      layoutId={latestData.id + ''}
+                      layoutId={latestData.id + 'latest'}
                       variants={boxVariants}
                       initial="normal"
                       whileHover="hover"
                       transition={{ type: 'tween' }}
                       key={latestData.id}
                       bgPhoto={makeImagePath(latestData.backdrop_path, 'w500')}
-                      onClick={() => onBoxClicked(latestData.id)}
+                      onClick={() => onBoxClicked(latestData.id, 'latest')}
                     >
                       <Info variants={infoVariants}>
                         <h4>{latestData.title}</h4>
@@ -385,24 +386,24 @@ function Home() {
                 </Row>
               </Slider>
             </Content>
-            {/* <AnimatePresence>
-            {bigMovieMatch ? (
-              <>
-                <Overlay onClick={onOverlayClick} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
-                <BigMovie style={{ top: scrollY.get() + 100 }} layoutId={bigMovieMatch.params.movieId}>
-                  {clickedMovie && (
-                    <>
-                      <BigCover
-                        style={{ backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(clickedMovie.backdrop_path, 'w500')})` }}
-                      />
-                      <BigTitle>{clickedMovie.title}</BigTitle>
-                      <BigOverview>{clickedMovie.overview}</BigOverview>
-                    </>
-                  )}
-                </BigMovie>
-              </>
-            ) : null}
-          </AnimatePresence> */}
+            <AnimatePresence>
+              {bigMovieMatch ? (
+                <>
+                  <Overlay onClick={onOverlayClick} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
+                  <BigMovie style={{ top: scrollY.get() + 100 }} layoutId={bigMovieMatch.params.movieId}>
+                    {clickedMovie && (
+                      <>
+                        <BigCover
+                          style={{ backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(clickedMovie.backdrop_path, 'w500')})` }}
+                        />
+                        <BigTitle>{clickedMovie.title}</BigTitle>
+                        <BigOverview>{clickedMovie.overview}</BigOverview>
+                      </>
+                    )}
+                  </BigMovie>
+                </>
+              ) : null}
+            </AnimatePresence>
           </Rows>
         </>
       )}
