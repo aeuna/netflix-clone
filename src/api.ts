@@ -56,19 +56,19 @@ export function getRatedMovies() {
 }
 
 export function getUpcomingMovies() {
-  return fetch(`${BASE_PATH}/movie/upcoming?api_key=${API_KEY}&language=ko&region=kr`).then((response) => response.json());
+  return fetch(`${BASE_PATH}/movie/upcoming?api_key=${API_KEY}`).then((response) => response.json());
 }
 
 export function getLatestShows() {
-  return fetch(`${BASE_PATH}/tv/latest?api_key=${API_KEY}&language=ko`).then((response) => response.json());
+  return fetch(`${BASE_PATH}/tv/latest?api_key=${API_KEY}`).then((response) => response.json());
 }
 
 export function getAiringToday() {
-  return fetch(`${BASE_PATH}/tv/airing_today?api_key=${API_KEY}&language=ko`).then((response) => response.json());
+  return fetch(`${BASE_PATH}/tv/airing_today?api_key=${API_KEY}`).then((response) => response.json());
 }
 
 export function getPopularShows() {
-  return fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}&language=ko`).then((response) => response.json());
+  return fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}`).then((response) => response.json());
 }
 
 export function getTopRatedShows() {
