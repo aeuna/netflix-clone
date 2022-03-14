@@ -4,8 +4,10 @@ import styled from 'styled-components';
 import { getSearchMovies, getSearchTvShows, IGetMoviesResult, IGetSearchTvResult } from '../api';
 import { makeImagePath } from '../utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GrNext } from 'react-icons/gr';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { searchState } from '../atoms';
 
 const Wrapper = styled.div`
   background: black;
@@ -144,11 +146,16 @@ const infoVariants = {
 const offset = 9;
 
 function Search() {
+  const [search, setSearch] = useRecoilState(searchState);
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get('keyword');
 
-  const { data: movieData, isLoading: movieLoading } = useQuery<IGetMoviesResult>(['search', 'movie'], async () => keyword && getSearchMovies(keyword));
-  const { data: tvData, isLoading: tvLoading } = useQuery<IGetSearchTvResult>(['search', 'tv'], async () => keyword && getSearchTvShows(keyword));
+  useEffect(() => {
+    if (keyword) setSearch(keyword);
+  }, []);
+
+  const { data: movieData, isLoading: movieLoading } = useQuery<IGetMoviesResult>(['search', 'movie', search], async () => keyword && getSearchMovies(search));
+  const { data: tvData, isLoading: tvLoading } = useQuery<IGetSearchTvResult>(['search', 'tv', search], async () => keyword && getSearchTvShows(search));
 
   const [movieIndex, setMovieIndex] = useState(0);
   const [movieLeaving, setMovieLeaving] = useState(false);

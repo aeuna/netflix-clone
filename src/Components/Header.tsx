@@ -3,6 +3,8 @@ import { motion, useAnimation, useViewportScroll } from 'framer-motion';
 import { Link, useRouteMatch, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { searchState } from '../atoms';
 
 const Nav = styled(motion.nav)`
   width: 100%;
@@ -111,6 +113,8 @@ interface IForm {
 }
 
 function Header() {
+  const setSearch = useSetRecoilState(searchState);
+
   const [searchOpen, setSearchOpen] = useState(false);
 
   const homeMatch = useRouteMatch('/');
@@ -146,6 +150,7 @@ function Header() {
   const history = useHistory();
   const { register, handleSubmit } = useForm<IForm>();
   const onValid = (data: IForm) => {
+    setSearch(data.keyword);
     history.push(`/search?keyword=${data.keyword}`);
   };
 
