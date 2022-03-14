@@ -111,7 +111,7 @@ const BigCover = styled.div`
 const BigTitle = styled.h3`
   color: ${(props) => props.theme.white.lighter};
   padding: 20px;
-  font-size: 46px;
+  font-size: 35px;
   position: relative;
   top: -80px;
 `;
@@ -158,6 +158,44 @@ const NextIcon = styled(GrNext)`
   right: 0px;
   margin: 85px 0px;
   background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 255, 255, 0.3));
+`;
+
+const BigPoster = styled.div`
+  top: 250px;
+  color: ${(props) => props.theme.white.lighter};
+  z-index: 99;
+  position: absolute;
+  right: 20px;
+  overflow: hidden;
+  margin: 0 auto;
+  width: 160px;
+  height: 240px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const BigOriginalTitle = styled.div`
+  padding: 5px 20px;
+  position: relative;
+  top: -80px;
+  color: ${(props) => props.theme.white.lighter};
+`;
+
+const BigVote = styled.div`
+  padding: 5px 20px;
+  position: relative;
+  top: -80px;
+  color: ${(props) => props.theme.white.lighter};
+`;
+
+const BigPopularity = styled.div`
+  padding: 5px 20px;
+  position: relative;
+  top: -80px;
+  color: ${(props) => props.theme.white.lighter};
 `;
 
 const rowVariants = {
@@ -400,7 +438,15 @@ function Home() {
                           style={{ backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(clickedMovie.backdrop_path, 'w500')})` }}
                         />
                         <BigTitle>{clickedMovie.title}</BigTitle>
+                        <BigOriginalTitle>
+                          {clickedMovie.original_title} ({clickedMovie.release_date})
+                        </BigOriginalTitle>
+                        <BigVote>⭐ {clickedMovie.vote_average}</BigVote>
+                        <BigPopularity>&#128156; {clickedMovie.popularity}</BigPopularity>
                         <BigOverview>{clickedMovie.overview}</BigOverview>
+                        <BigPoster>
+                          <img src={makeImagePath(clickedMovie.poster_path, 'w200')} alt="tv" />
+                        </BigPoster>
                       </>
                     )}
                   </BigMovie>

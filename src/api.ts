@@ -7,6 +7,10 @@ export interface IMovie {
   poster_path: string;
   title: string;
   overview: string;
+  original_title: string;
+  vote_average: number;
+  popularity: number;
+  release_date: string;
 }
 
 export interface ITvShow {
